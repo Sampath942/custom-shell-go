@@ -89,7 +89,7 @@ func main() {
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
-				fmt.Println(string(output))
+				fmt.Print(string(output))
 			}
 		}
 	}
