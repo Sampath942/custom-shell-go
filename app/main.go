@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 )
 
 func main() {
@@ -12,8 +13,13 @@ func main() {
 		fmt.Print("$ ")
 		cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		cmd = strings.TrimRight(cmd, "\r\n")
-		if(cmd == "exit") {
+		cmd = strings.TrimLeftFunc(cmd, unicode.IsSpace)
+		if cmd == "exit" {
 			break
+		} else if len(cmd) >= 5 && cmd[:5] == "echo " {
+			remaining := cmd[5:]
+			fmt.Println(remaining)
+			continue
 		}
 		fmt.Println(cmd + ": command not found")
 	}
