@@ -8,8 +8,10 @@ import (
 )
 
 func main() {
-	fmt.Print("$ ")
-	cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-	cmd = strings.TrimRight(cmd, "\r\n")
-	fmt.Println(cmd + ": command not found")
+	for {
+		fmt.Print("$ ")
+		cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+		cmd = strings.TrimRight(cmd, "\r\n")
+		fmt.Println(cmd + ": command not found")
+	}
 }
