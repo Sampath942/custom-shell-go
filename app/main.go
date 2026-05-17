@@ -36,7 +36,7 @@ func typeFunc(args ...interface{}) interface{} {
 	command := deconstructedArgs[0]
 	cmdInfo, exists := cmdMap[command]
 	if !exists {
-		fmt.Println(command + ": command not found")
+		fmt.Println(command + ": not found")
 	} else {
 		fmt.Println(command + " is a " + cmdInfo.cmdType)
 	}
