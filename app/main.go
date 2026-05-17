@@ -77,10 +77,17 @@ func main() {
 		cmd = strings.TrimLeftFunc(cmd, unicode.IsSpace)
 		command, args := parseInput(cmd)
 		cmdInfo, exists := cmdMap[command]
-		if !exists {
-			fmt.Println(cmd + ": command not found")
-		} else {
+		if exists {
 			cmdInfo.cmdFunc(args)
+		} else {
+			_, err := exec.LookPath(command)
+			if err != nil {
+				fmt.Println(command + ": command not found")
+			} else {
+				execCmd := exec.Command(command, args...)
+				output, _ := execCmd.Output()
+				fmt.Println(string(output))
+			}
 		}
 	}
 }
