@@ -12,6 +12,9 @@ func main() {
 		fmt.Print("$ ")
 		cmd, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		cmd = strings.TrimRight(cmd, "\r\n")
+		if(cmd == "exit") {
+			break
+		}
 		fmt.Println(cmd + ": command not found")
 	}
 }
