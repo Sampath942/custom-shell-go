@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 	"unicode"
 )
@@ -35,10 +36,15 @@ func typeFunc(args ...interface{}) interface{} {
 	deconstructedArgs := args[0].([]string)
 	command := deconstructedArgs[0]
 	cmdInfo, exists := cmdMap[command]
-	if !exists {
-		fmt.Println(command + ": not found")
+	if exists {
+		fmt.Println(command + " is " + cmdInfo.cmdType)
 	} else {
-		fmt.Println(command + " is a " + cmdInfo.cmdType)
+		path, err := exec.LookPath(command)
+		if err != nil {
+			fmt.Println(command + ": not found")
+		} else {
+			fmt.Println(command + " is " + path)
+		}
 	}
 	return nil
 }
@@ -47,15 +53,15 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	cmdMap = map[string] CommandInfo {
 		"exit": CommandInfo{
-			cmdType: "shell builtin",
+			cmdType: "a shell builtin",
 			cmdFunc: exitFunc,
 		},
 		"echo": CommandInfo{
-			cmdType: "shell builtin",
+			cmdType: "a shell builtin",
 			cmdFunc: echoFunc,
 		},
 		"type": CommandInfo{
-			cmdType: "shell builtin",
+			cmdType: "a shell builtin",
 			cmdFunc: typeFunc,
 		},
 	}
