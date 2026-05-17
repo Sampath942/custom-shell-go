@@ -1,0 +1,22 @@
+{
+    "chat.agent.enabled": false,
+    "chat.checkpoints.enabled": false,
+    "chat.editRequests": "none",
+    "chat.agent.sandbox.allowAutoApprove": false,
+    "chat.agent.sandbox.allowUnsandboxedCommands": false,
+    "chat.agent.thinking.generateTitles": false,
+    "chat.agent.thinking.terminalTools": false,
+    "chat.editMode.hidden": false,
+    "chat.extensionUnification.enabled": false,
+    "chat.extensionTools.enabled": false,
+    "chat.tools.autoExpandFailures": false,
+    "chat.tools.terminal.enableAutoApprove": false,
+    "chat.tools.terminal.preventShellHistory": false,
+    "chat.tools.todos.showWidget": false,
+    "chat.tools.renameTool.enabled": false,
+    "chat.tools.usagesTool.enabled": false,
+    "chat.tools.riskAssessment.enabled": false,
+    "chat.tools.terminal.autoApproveWorkspaceNpmScripts": false,
+    "inlineChat.askInChat": false,
+    "inlineChat.fixDiagnostics": false
+}
