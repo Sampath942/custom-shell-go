@@ -85,8 +85,8 @@ func main() {
 				fmt.Println(command + ": command not found")
 			} else {
 				execCmd := exec.Command(command, args...)
-				execCmd.Run()
-				// fmt.Println(string(output))
+				output, _ := execCmd.Output()
+				fmt.Println(string(output))
 			}
 		}
 	}
