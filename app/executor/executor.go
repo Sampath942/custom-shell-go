@@ -27,6 +27,9 @@ func echoFunc(args ...interface{}) interface{} {
 
 func typeFunc(args ...interface{}) interface{} {
 	deconstructedArgs := args[0].([]string)
+	if len(deconstructedArgs) == 0 {
+		os.Exit(1)
+	}
 	command := deconstructedArgs[0]
 	cmdInfo, exists := CmdMap[command]
 	if exists {
@@ -51,6 +54,19 @@ func pwdFunc(args ...interface{}) interface{} {
 	return nil
 }
 
+func cdFunc(args ...interface{}) interface{} {
+	deconstructedArgs := args[0].([]string)
+	if len(deconstructedArgs) == 0 {
+		return nil
+	}
+	dir := deconstructedArgs[0]
+	err := os.Chdir(dir)
+	if err != nil {
+		fmt.Println("cd: " + dir + ": No such file or directory")
+	}
+	return nil
+}
+
 func ExecuteCommand(command string, args []string) any {
 	CmdMap = map[string]CommandInfo{
 		"exit": CommandInfo{
@@ -68,6 +84,10 @@ func ExecuteCommand(command string, args []string) any {
 		"pwd": CommandInfo{
 			cmdType: "a shell builtin",
 			cmdFunc: pwdFunc,
+		},
+		"cd": CommandInfo{
+			cmdType: "a shell builtin",
+			cmdFunc: cdFunc,
 		},
 	}
 	cmdInfo, exists := CmdMap[command]
