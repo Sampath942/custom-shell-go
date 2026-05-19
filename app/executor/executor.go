@@ -60,6 +60,15 @@ func cdFunc(args ...interface{}) interface{} {
 		return nil
 	}
 	dir := deconstructedArgs[0]
+	if dir == "~" {
+		homedir, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		os.Chdir(homedir)
+		return nil
+	}
 	err := os.Chdir(dir)
 	if err != nil {
 		fmt.Println("cd: " + dir + ": No such file or directory")
