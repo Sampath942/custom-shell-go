@@ -110,13 +110,10 @@ func ExecuteCommand(command string, args string) any {
 		if err != nil {
 			fmt.Println(command + ": command not found")
 		} else {
-			fmt.Println("Command found")
 			execCmd := exec.Command(command, args)
-			output, err := execCmd.CombinedOutput()
-			if err != nil {
-				fmt.Fprintln(os.Stderr, err)
-			}
-			fmt.Print(string(output))
+			execCmd.Stdout = os.Stdout
+			execCmd.Stderr = os.Stderr
+			execCmd.Run()
 		}
 	}
 	return nil
