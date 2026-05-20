@@ -9,24 +9,33 @@ import (
 
 type CommandInfo struct {
 	cmdType string
-	cmdFunc func(args ...interface{}) interface{}
+	cmdFunc func(args string) interface{}
 }
 
 var CmdMap map[string]CommandInfo
 
-func exitFunc(args ...interface{}) interface{} {
+func exitFunc(args string) interface{} {
 	os.Exit(0)
 	return nil
 }
 
-func echoFunc(args ...interface{}) interface{} {
-	deconstructedArgs := args[0].([]string)
-	fmt.Println(strings.Join(deconstructedArgs, " "))
+func echoFunc(args string) interface{} {
+	args = strings.Trim(args, " ")
+	deconstructedArgs := strings.Split(args, "'")
+	var finalArr []string
+	for i := 0; i < len(deconstructedArgs) - 1; i = i + 2 {
+		temp := strings.Fields(deconstructedArgs[i])
+		finalArr = append(finalArr, strings.Join(temp, " "))
+		finalArr = append(finalArr, deconstructedArgs[i + 1])
+	}
+	temp := strings.Fields(deconstructedArgs[len(deconstructedArgs) - 1])
+	finalArr = append(finalArr, strings.Join(temp, " "))
+	fmt.Println(strings.Join(finalArr, ""))
 	return nil
 }
 
-func typeFunc(args ...interface{}) interface{} {
-	deconstructedArgs := args[0].([]string)
+func typeFunc(args string) interface{} {
+	deconstructedArgs := strings.Fields(args)
 	if len(deconstructedArgs) == 0 {
 		os.Exit(1)
 	}
@@ -45,7 +54,7 @@ func typeFunc(args ...interface{}) interface{} {
 	return nil
 }
 
-func pwdFunc(args ...interface{}) interface{} {
+func pwdFunc(args string) interface{} {
 	dir, err := os.Getwd()
 	if err != nil {
 		os.Exit(1)
@@ -54,8 +63,8 @@ func pwdFunc(args ...interface{}) interface{} {
 	return nil
 }
 
-func cdFunc(args ...interface{}) interface{} {
-	deconstructedArgs := args[0].([]string)
+func cdFunc(args string) interface{} {
+	deconstructedArgs := strings.Fields(args)
 	if len(deconstructedArgs) == 0 {
 		return nil
 	}
@@ -76,7 +85,7 @@ func cdFunc(args ...interface{}) interface{} {
 	return nil
 }
 
-func ExecuteCommand(command string, args []string) any {
+func ExecuteCommand(command string, args string) any {
 	CmdMap = map[string]CommandInfo{
 		"exit": CommandInfo{
 			cmdType: "a shell builtin",
@@ -107,7 +116,7 @@ func ExecuteCommand(command string, args []string) any {
 		if err != nil {
 			fmt.Println(command + ": command not found")
 		} else {
-			execCmd := exec.Command(command, args...)
+			execCmd := exec.Command(command, args)
 			output, err := execCmd.CombinedOutput()
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
