@@ -25,11 +25,11 @@ func echoFunc(args string) interface{} {
 	var finalArr []string
 	
 	for i := 0; i < len(deconstructedArgs) - 1; i = i + 2 {
-		temp := strings.Split(deconstructedArgs[i], " ")
+		temp := strings.Fields(deconstructedArgs[i])
 		finalArr = append(finalArr, strings.Join(temp, " "))
 		finalArr = append(finalArr, deconstructedArgs[i + 1])
 	}
-	temp := strings.Split(deconstructedArgs[len(deconstructedArgs) - 1], " ")
+	temp := strings.Fields(deconstructedArgs[len(deconstructedArgs) - 1])
 	finalArr = append(finalArr, strings.Join(temp, " "))
 	fmt.Println(strings.Join(finalArr, ""))
 	return nil
