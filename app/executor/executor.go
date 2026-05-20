@@ -26,6 +26,10 @@ func echoFunc(args string) interface{} {
 	
 	for i := 0; i < len(deconstructedArgs) - 1; i = i + 2 {
 		temp := strings.Fields(deconstructedArgs[i])
+		// fmt.Println(temp, len(temp), len(deconstructedArgs[i]))
+		if(len(temp) == 0 && len(deconstructedArgs[i]) > 0) {
+			finalArr = append(finalArr, " ")
+		}
 		finalArr = append(finalArr, strings.Join(temp, " "))
 		finalArr = append(finalArr, deconstructedArgs[i + 1])
 	}
