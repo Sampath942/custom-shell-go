@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"github.com/google/shlex"
 )
 
 type CommandInfo struct {
@@ -21,25 +22,13 @@ func exitFunc(args string) interface{} {
 
 func echoFunc(args string) interface{} {
 	args = strings.Trim(args, " ")
-	deconstructedArgs := strings.Split(args, "'")
-	var finalArr []string
-	
-	for i := 0; i < len(deconstructedArgs) - 1; i = i + 2 {
-		temp := strings.Fields(deconstructedArgs[i])
-		// fmt.Println(temp, len(temp), len(deconstructedArgs[i]))
-		if(len(temp) == 0 && len(deconstructedArgs[i]) > 0) {
-			finalArr = append(finalArr, " ")
-		}
-		finalArr = append(finalArr, strings.Join(temp, " "))
-		finalArr = append(finalArr, deconstructedArgs[i + 1])
-	}
-	temp := strings.Fields(deconstructedArgs[len(deconstructedArgs) - 1])
-	finalArr = append(finalArr, strings.Join(temp, " "))
-	fmt.Println(strings.Join(finalArr, ""))
+	deconstructedArgs, _ := shlex.Split(args)
+	fmt.Println(strings.Join(deconstructedArgs, " "))
 	return nil
 }
 
 // echo 'world     script' 'example''hello' test''shell
+// echo 'script     example' 'world''test' hello''shell
 
 func typeFunc(args string) interface{} {
 	deconstructedArgs := strings.Fields(args)
