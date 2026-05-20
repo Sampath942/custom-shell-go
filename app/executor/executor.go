@@ -9,31 +9,29 @@ import (
 
 type CommandInfo struct {
 	cmdType string
-	cmdFunc func(args string) interface{}
+	cmdFunc func(args []string) interface{}
 }
 
 var CmdMap map[string]CommandInfo
 
-func exitFunc(args string) interface{} {
+func exitFunc(args []string) interface{} {
 	os.Exit(0)
 	return nil
 }
 
-func echoFunc(args string) interface{} {
-	args = strings.Trim(args, " ")
-	fmt.Println(args)
+func echoFunc(args []string) interface{} {
+	fmt.Println(strings.Join(args, " "))
 	return nil
 }
 
 // echo 'world     script' 'example''hello' test''shell
 // echo 'script     example' 'world''test' hello''shell
 
-func typeFunc(args string) interface{} {
-	deconstructedArgs := strings.Fields(args)
-	if len(deconstructedArgs) == 0 {
+func typeFunc(args []string) interface{} {
+	if len(args) == 0 {
 		os.Exit(1)
 	}
-	command := deconstructedArgs[0]
+	command := args[0]
 	cmdInfo, exists := CmdMap[command]
 	if exists {
 		fmt.Println(command + " is " + cmdInfo.cmdType)
@@ -48,7 +46,7 @@ func typeFunc(args string) interface{} {
 	return nil
 }
 
-func pwdFunc(args string) interface{} {
+func pwdFunc(args []string) interface{} {
 	dir, err := os.Getwd()
 	if err != nil {
 		os.Exit(1)
@@ -57,12 +55,11 @@ func pwdFunc(args string) interface{} {
 	return nil
 }
 
-func cdFunc(args string) interface{} {
-	deconstructedArgs := strings.Fields(args)
-	if len(deconstructedArgs) == 0 {
+func cdFunc(args []string) interface{} {
+	if len(args) == 0 {
 		return nil
 	}
-	dir := deconstructedArgs[0]
+	dir := args[0]
 	if dir == "~" {
 		homedir, err := os.UserHomeDir()
 		if err != nil {
@@ -79,7 +76,7 @@ func cdFunc(args string) interface{} {
 	return nil
 }
 
-func ExecuteCommand(command string, args string) any {
+func ExecuteCommand(command string, args []string) any {
 	CmdMap = map[string]CommandInfo{
 		"exit": CommandInfo{
 			cmdType: "a shell builtin",
@@ -110,8 +107,7 @@ func ExecuteCommand(command string, args string) any {
 		if err != nil {
 			fmt.Println(command + ": command not found")
 		} else {
-			fmt.Println("args: ", args)
-			execCmd := exec.Command(command, args)
+			execCmd := exec.Command(command, args...)
 			execCmd.Stdout = os.Stdout
 			execCmd.Stderr = os.Stderr
 			execCmd.Run()
