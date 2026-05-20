@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"github.com/google/shlex"
 )
 
 type CommandInfo struct {
@@ -22,8 +21,7 @@ func exitFunc(args string) interface{} {
 
 func echoFunc(args string) interface{} {
 	args = strings.Trim(args, " ")
-	deconstructedArgs, _ := shlex.Split(args)
-	fmt.Println(strings.Join(deconstructedArgs, " "))
+	fmt.Println(args)
 	return nil
 }
 
